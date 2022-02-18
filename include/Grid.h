@@ -2,14 +2,17 @@
 
 #include "Cell.h"
 
+template <typename T>
 class Grid
 {
 private:
     Vector size;
-    Cell** data;
+    T** data;
 public:
     Grid();
     Grid(Vector size);
-    Cell* operator[](int index);
+    T* operator[](int index);
     ~Grid();
 };
+
+#include "../src/Grid.inl"

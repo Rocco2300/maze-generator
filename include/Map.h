@@ -6,7 +6,7 @@ class Map
 {
 private:
     Vector size;
-    Grid grid;
+    Grid<Cell> grid;
 public:
     Map();
     Map(Vector size);

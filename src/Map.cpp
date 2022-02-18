@@ -8,7 +8,7 @@ Map::Map()
 Map::Map(Vector size)
 {
     this->size = size;
-    grid = Grid(size);
+    grid = Grid<Cell>(size);
 
     for(int y = 0; y < size.y; y++)
     {

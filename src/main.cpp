@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Cell.h"
+#include "Grid.h"
 
 Vector getPositionFromDir(Vector currentPos, int dir)
 {
@@ -36,7 +36,8 @@ bool isCellInBounds(Vector pos)
 
 int main()
 {
-    Cell grid[5][5];    
+    Grid grid({5, 5});
+
     for(int y = 0; y < 5; y++)
     {
         for(int x = 0; x < 5; x++)
@@ -52,5 +53,6 @@ int main()
             }
         }
     }
+    grid[0][0].printNeighbours();
     return 0;
 }

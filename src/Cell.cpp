@@ -20,13 +20,6 @@ void Cell::setNeighbour(int index, Cell* neighbour)
     neighbours[index] = neighbour;
 }
 
-void Cell::printNeighbours()
-{
-    std::cout << "Neighbours addresses: " << std::endl;
-    for(int i = 0; i < 4; i++)
-        std::cout << "Dir #" << i << ": " << neighbours[i] << std::endl;
-}
-
 bool Cell::isVisited()
 {
     return visited;
@@ -35,4 +28,11 @@ bool Cell::isVisited()
 void Cell::setVisited(bool value)
 {
     visited = value;
+}
+
+void Cell::printNeighbours()
+{
+    std::cout << "Neighbours addresses: " << std::endl;
+    for(int i = 0; i < 4; i++)
+        std::cout << "Dir #" << i << ": " << neighbours[i] << std::endl;
 }

@@ -14,8 +14,8 @@ OBJS = $(SRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-$(OBJS): $(SRCS)
-	$(CXX) $(CXXFLAGS) -I $(INC) -c $^ -o $@
+$(OBJ)/%.o: $(SRC)/%.cpp
+	$(CXX) $(CXXFLAGS) -I $(INC) -c $< -o $@
 
 clean:
 	del /f obj\\*.o

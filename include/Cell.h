@@ -8,20 +8,12 @@ struct Vector
     int x, y;
 };
 
-enum WallDirection
-{
-    North = 0,
-    East = 1,
-    South = 2,
-    West = 3
-};
-
 enum Direction
 {
-    Up = 0,
-    Right,
-    Down,
-    Left
+    N = 0,
+    E,
+    S,
+    W
 };
 
 class Cell
@@ -35,7 +27,9 @@ public:
     Cell();
     Cell(Vector pos);
     void setNeighbour(int index, Cell* neighbour);
-    void printNeighbours();
     bool isVisited();
     void setVisited(bool value);
+    uint8_t getWalls();
+    void destroyWall(Direction dir);
+    void printNeighbours();
 };

@@ -27,6 +27,23 @@ Map::Map(Vector size)
     }
 }
 
+Cell* Map::operator[](int index)
+{
+    return grid[index];
+}
+
+void Map::printWalls()
+{
+    for(int y = 0; y < size.y; y++)
+    {
+        for(int x = 0; x < size.x; x++)
+        {
+            std::cout << (int)grid[y][x].getWalls() << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 void Map::printVisitedMap()
 {
     for(int y = 0; y < size.y; y++)
@@ -52,19 +69,19 @@ Vector Map::getPositionFromDir(Vector currentPos, Direction dir)
     Vector res;
     switch(dir)
     {
-    case Up:
+    case N:
         res.x = currentPos.y;
         res.y = currentPos.x - 1;
         break;
-    case Right:
+    case E:
         res.x = currentPos.y + 1;
         res.y = currentPos.x;
         break;
-    case Down:
+    case S:
         res.x = currentPos.y;
         res.y = currentPos.x + 1;
         break;
-    case Left:
+    case W:
         res.x = currentPos.y - 1;
         res.y = currentPos.x;
         break;

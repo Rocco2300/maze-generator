@@ -5,7 +5,7 @@
 int main()
 {
     Map map({5, 7});
-    map.printVisitedMap();
-    map.printNeighbours({6, 0});
+    map[0][1].destroyWall(Direction::E);
+    map.printWalls();
     return 0;
 }

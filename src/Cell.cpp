@@ -18,7 +18,7 @@ Cell::Cell(Vector pos)
 
 void Cell::setNeighbour(int index, Cell* neighbour)
 {
-    assert(index >= 0 && index <= 4);
+    assert(index >= 0 && index < 4);
     neighbours[index] = neighbour;
 }
 

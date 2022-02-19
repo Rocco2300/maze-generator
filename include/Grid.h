@@ -15,4 +15,4 @@ public:
     ~Grid();
 };
 
-#include "../src/Grid.inl"
+#include "Grid.inl"

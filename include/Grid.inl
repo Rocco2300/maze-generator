@@ -17,6 +17,25 @@ Grid<T>::Grid(Vector size)
 }
 
 template <typename T>
+Grid<T>::Grid(const Grid& grid)
+{
+    this->size = grid.size;
+    data = new T*[size.y];
+    for(int i = 0; i < size.y; i++)
+    {
+        data[i] = new T[size.x];
+    }
+
+    for(int i = 0; i < size.y; i++)
+    {
+        for(int j = 0; j < size.x; j++)
+        {
+            this->data[i][j] = grid.data[i][j];
+        }
+    }
+}
+
+template <typename T>
 T* Grid<T>::operator[](int index)
 {
     assert(index < size.x && index < size.y);

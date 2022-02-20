@@ -28,9 +28,13 @@ public:
     Cell();
     Cell(Vector pos);
     void setNeighbour(int index, Cell* neighbour);
+    Cell** getNeighbours();
+    void removeNeighbour(Cell* neighbour);
+    void removeFromNeighbours();
     bool isVisited();
     void setVisited(bool value);
     uint8_t getWalls();
     void destroyWall(Direction dir);
+    Vector getPositionFromDir(Direction dir);
     void printNeighbours();
 };

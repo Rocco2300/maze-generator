@@ -1,9 +1,12 @@
 #include <iostream>
+#include <random>
+#include <ctime>
 #include "Map.h"
 
 int main()
 {
-    Map map({10, 10});
-    map.printVisitedMap();
+    srand(time(NULL));
+    Map map({10, 7});
+    // map.printVisitedMap();
     return 0;
 }

@@ -7,11 +7,13 @@ class Map
 private:
     Vector size;
     Grid<Cell> grid;
+    Grid<char> viewableMap;
 public:
     Map();
     Map(Vector size);
+    Vector getSize();
+    Grid<Cell>* getMapData();
     Cell* operator[](int index);
-    Vector getPositionFromDir(Vector currPos, Direction dir);
     bool isCellInBounds(Vector pos);
     void printWalls();
     void printVisitedMap();

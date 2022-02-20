@@ -18,7 +18,7 @@ Map::Map(Vector size)
 
             for(int dir = 0; dir < 4; dir++)
             {
-                Vector newPos = getPositionFromDir({y, x}, (Direction)dir);
+                Vector newPos = grid[y][x].getPositionFromDir((Direction)dir);
 
                 if(isCellInBounds(newPos))
                 {
@@ -27,6 +27,16 @@ Map::Map(Vector size)
             }
         }
     }
+}
+
+Vector Map::getSize()
+{
+    return size;
+}
+
+Grid<Cell>* Map::getMapData()
+{
+    return &grid;
 }
 
 Cell* Map::operator[](int index)
@@ -61,34 +71,6 @@ void Map::printVisitedMap()
 void Map::printNeighbours(Vector pos)
 {
     grid[pos.x][pos.y].printNeighbours();
-}
-
-Vector Map::getPositionFromDir(Vector currentPos, Direction dir)
-{
-    // Due to the fact the we invert x and y to make traversing 
-    // the matrix more logical in cartesian coordinates, we have to
-    // invert the result so as res(x, y) = currentPos(y, x)
-    Vector res;
-    switch(dir)
-    {
-    case N:
-        res.x = currentPos.y;
-        res.y = currentPos.x - 1;
-        break;
-    case E:
-        res.x = currentPos.y + 1;
-        res.y = currentPos.x;
-        break;
-    case S:
-        res.x = currentPos.y;
-        res.y = currentPos.x + 1;
-        break;
-    case W:
-        res.x = currentPos.y - 1;
-        res.y = currentPos.x;
-        break;
-    }
-    return res;
 }
 
 bool Map::isCellInBounds(Vector pos)

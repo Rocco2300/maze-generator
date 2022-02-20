@@ -21,7 +21,9 @@ Map::Map(Vector size)
                 Vector newPos = getPositionFromDir({y, x}, (Direction)dir);
 
                 if(isCellInBounds(newPos))
+                {
                     grid[y][x].setNeighbour(dir, &grid[newPos.y][newPos.x]);
+                }
             }
         }
     }

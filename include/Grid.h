@@ -12,6 +12,7 @@ public:
     Grid();
     Grid(Vector size);
     T* operator[](int index);
+    Grid& operator=(const Grid& grid);
     ~Grid();
 };
 

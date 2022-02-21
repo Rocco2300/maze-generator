@@ -14,12 +14,19 @@ Cell::Cell(Vector pos)
     {
         neighbours[i] = nullptr;
     }
+    this->noOfNeighbours = 0;
+}
+
+Vector Cell::getPosition()
+{
+    return pos;
 }
 
 void Cell::setNeighbour(int index, Cell* neighbour)
 {
     assert(index >= 0 && index < 4);
     neighbours[index] = neighbour;
+    noOfNeighbours++;
 }
 
 Cell** Cell::getNeighbours()
@@ -32,7 +39,10 @@ void Cell::removeNeighbour(Cell* neighbour)
     for(int i = 0; i < 4; i++)
     {
         if(neighbours[i] == neighbour)
+        {
             neighbours[i] = nullptr;
+            noOfNeighbours--;
+        }
     }
 }
 
@@ -43,6 +53,11 @@ void Cell::removeFromNeighbours()
         if(neighbours[i] != nullptr)
             neighbours[i]->removeNeighbour(this);
     }
+}
+
+uint8_t Cell::getNumberOfNeighbours()
+{
+    return noOfNeighbours;
 }
 
 bool Cell::isVisited()

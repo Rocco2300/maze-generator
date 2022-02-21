@@ -5,9 +5,8 @@
 class Map
 {
 private:
-    Vector size;
     Grid<Cell> grid;
-    Grid<char> viewableMap;
+    Vector size;
 public:
     Map();
     Map(Vector size);

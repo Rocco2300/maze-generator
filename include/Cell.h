@@ -23,15 +23,18 @@ private:
     Vector pos;
     bool visited;
     Cell* neighbours[4];
+    uint8_t noOfNeighbours;
     uint8_t walls;
 public:
     Cell();
     Cell(Vector pos);
+    Vector getPosition();
     void setNeighbour(int index, Cell* neighbour);
     Cell** getNeighbours();
     void removeNeighbour(Cell* neighbour);
     void removeFromNeighbours();
-    bool isVisited();
+    uint8_t getNumberOfNeighbours();
+    bool isVisited();   
     void setVisited(bool value);
     uint8_t getWalls();
     void destroyWall(Direction dir);

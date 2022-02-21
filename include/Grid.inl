@@ -43,6 +43,13 @@ T* Grid<T>::operator[](int index)
 }
 
 template <typename T>
+T& Grid<T>::at(int xIndex, int yIndex)
+{
+    assert(xIndex < size.x && yIndex < size.y);
+    return data[xIndex][yIndex];
+}
+
+template <typename T>
 Grid<T>& Grid<T>::operator=(const Grid<T>& grid)
 {
     if(this == &grid)
@@ -69,6 +76,12 @@ Grid<T>& Grid<T>::operator=(const Grid<T>& grid)
         }
     }
     return *this;
+}
+
+template <typename T>
+Vector Grid<T>::getSize()
+{
+    return size;
 }
 
 template <typename T>

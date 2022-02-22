@@ -5,74 +5,26 @@
 
 Cell::Cell() { }
 
-Cell::Cell(Vector pos)
+Cell::Cell(Coord pos)
 {
     this->pos = pos;
-    this->visited = false;
     this->walls = 15;
-    for(int i = 0; i < 4; i++)
-    {
-        neighbours[i] = nullptr;
-    }
-    this->noOfNeighbours = 0;
+    this->signature = 0;
 }
 
-Vector Cell::getPosition()
+Coord Cell::getPosition()
 {
     return pos;
-}
-
-void Cell::setNeighbour(int index, Cell* neighbour)
-{
-    assert(index >= 0 && index < 4);
-    neighbours[index] = neighbour;
-    noOfNeighbours++;
-}
-
-Cell** Cell::getNeighbours()
-{
-    return neighbours;
-}
-
-void Cell::removeNeighbour(Cell* neighbour)
-{
-    for(int i = 0; i < 4; i++)
-    {
-        if(neighbours[i] == neighbour)
-        {
-            neighbours[i] = nullptr;
-            noOfNeighbours--;
-        }
-    }
-}
-
-void Cell::removeFromNeighbours()
-{
-    for(int i = 0; i < 4; i++)
-    {
-        if(neighbours[i] != nullptr)
-            neighbours[i]->removeNeighbour(this);
-    }
-}
-
-uint8_t Cell::getNumberOfNeighbours()
-{
-    return noOfNeighbours;
-}
-
-bool Cell::isVisited()
-{
-    return visited;
-}
-
-void Cell::setVisited(bool value)
-{
-    visited = value;
 }
 
 uint8_t Cell::getWalls()
 {
     return walls;   
+}
+
+uint8_t Cell::getSignature()
+{
+    return signature;
 }
 
 void Cell::destroyWall(Direction dir)
@@ -83,38 +35,13 @@ void Cell::destroyWall(Direction dir)
     walls &= ~wallDir;
 }
 
-Vector Cell::getPositionFromDir(Direction dir)
+void Cell::updateSignature(DirFlag dir)
 {
-    // Due to the fact the we invert x and y to make traversing 
-    // the matrix more logical in cartesian coordinates, we have to
-    // invert the result so as res(x, y) = currentPos(y, x)
-    Vector res;
-    switch(dir)
-    {
-    case N:
-        res.x = pos.y;
-        res.y = pos.x - 1;
-        break;
-    case E:
-        res.x = pos.y + 1;
-        res.y = pos.x;
-        break;
-    case S:
-        res.x = pos.y;
-        res.y = pos.x + 1;
-        break;
-    case W:
-        res.x = pos.y - 1;
-        res.y = pos.x;
-        break;
-    }
-    return res;
+    signature |= static_cast<uint8_t>(dir);
 }
 
-
-void Cell::printNeighbours()
+std::ostream& operator<<(std::ostream& out, const Coord& coord)
 {
-    std::cout << "Neighbours addresses: " << std::endl;
-    for(int i = 0; i < 4; i++)
-        std::cout << "Dir #" << i << ": " << neighbours[i] << std::endl;
-}
+    out << "(" << coord.x << ", " << coord.y << ")";
+    return out;
+}   

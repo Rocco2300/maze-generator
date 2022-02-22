@@ -1,43 +1,55 @@
 #pragma once
 
+#include <iostream>
 #include <cassert>
 #include <cstdint>
 #include <vector>
 
-struct Vector
+struct Coord
 {
     int x, y;
+
+    Coord() { }
+    Coord(int _x, int _y) : x{_x}, y{_y} { }
+
+    Coord operator+(const Coord& other)
+    {
+        Coord res(x + other.x, y + other.y);
+        return res;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Coord& coord);
 };
 
-enum Direction
+enum class Direction
 {
-    N = 0,
-    E,
-    S,
-    W
+    North = 0,
+    East,
+    South,
+    West,
+    NONE
+};
+
+enum class DirFlag
+{
+    North = 1,
+    East = 1 << 1,
+    South = 1 << 2,
+    West = 1 << 3
 };
 
 class Cell
 {
 private:
-    Vector pos;
-    bool visited;
-    Cell* neighbours[4];
-    uint8_t noOfNeighbours;
+    Coord pos;
+    uint8_t signature;
     uint8_t walls;
 public:
     Cell();
-    Cell(Vector pos);
-    Vector getPosition();
-    void setNeighbour(int index, Cell* neighbour);
-    Cell** getNeighbours();
-    void removeNeighbour(Cell* neighbour);
-    void removeFromNeighbours();
-    uint8_t getNumberOfNeighbours();
-    bool isVisited();   
-    void setVisited(bool value);
+    Cell(Coord pos);
+    Coord getPosition();
     uint8_t getWalls();
+    uint8_t getSignature();
     void destroyWall(Direction dir);
-    Vector getPositionFromDir(Direction dir);
-    void printNeighbours();
+    void updateSignature(DirFlag dir);
 };

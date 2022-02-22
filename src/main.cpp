@@ -2,14 +2,12 @@
 #include <random>
 #include <algorithm>
 #include <ctime>
-#include "MapGenerator.h"
+#include "Maze.h"
 
 int main()
 {
     srand(time(NULL));
-    Map map({10, 7});
-    // MapGenerator gen(map);
-    // gen.generateMap();
-    map.printVisitedMap();
+    Maze maze({5, 4});
+    maze.printSignatures();
     return 0;
 }

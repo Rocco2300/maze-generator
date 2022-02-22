@@ -6,7 +6,7 @@ Grid<T>::Grid()
 }
 
 template <typename T>
-Grid<T>::Grid(Vector size)
+Grid<T>::Grid(Coord size)
 {
     this->size = size;
     data = new T*[size.y];
@@ -79,7 +79,7 @@ Grid<T>& Grid<T>::operator=(const Grid<T>& grid)
 }
 
 template <typename T>
-Vector Grid<T>::getSize()
+Coord Grid<T>::getSize()
 {
     return size;
 }

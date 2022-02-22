@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cassert>
 #include <cstdint>
-#include <vector>
 
 struct Coord
 {
@@ -23,11 +22,11 @@ struct Coord
 
 enum class Direction
 {
+    NONE = -1,
     North = 0,
     East,
     South,
     West,
-    NONE
 };
 
 enum class DirFlag

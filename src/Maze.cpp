@@ -29,9 +29,48 @@ Maze::Maze(Coord size)
     }
 }
 
-Coord Maze::getSize()
+void Maze::removeNeighbourSignatures(Coord coord)
 {
-    return size;
+    for(int dir = 0; dir < 4; dir++)
+    {
+        Coord nextCoord = coord + dirOffset[dir];
+
+        if(isCellInBounds(nextCoord))
+        {
+            Direction opposite = oppositeDir[dir];
+            grid[nextCoord.x][nextCoord.y].removeSignature(dirToFlag[(int)opposite]);
+        }
+    }
+}
+
+void Maze::generateMaze()
+{
+    Coord start;
+    start.x = rand() % size.x;
+    start.y = rand() % size.y;
+
+    generate(start);
+}
+
+void Maze::generate(Coord coord)
+{
+    // Set as visited for the neighbours
+    removeNeighbourSignatures(coord);
+
+    while(grid[coord.x][coord.y].getSignature() != 0)
+    {
+        auto sign = grid[coord.x][coord.y].getSignature();
+        auto randIndex = rand() % randDirTable[sign].size;
+        auto nextDir = randDirTable[sign].directions[randIndex];
+        auto offset = coord + dirOffset[(int)nextDir];
+
+        grid[coord.x][coord.y].destroyWall(dirToFlag[(int)nextDir]);
+        grid[offset.x][offset.y].destroyWall(dirToFlag[(int)oppositeDir[(int)nextDir]]);
+
+        grid[coord.x][coord.y].removeSignature(dirToFlag[(int)nextDir]);
+
+        generate(offset);
+    }
 }
 
 Cell* Maze::operator[](int index)

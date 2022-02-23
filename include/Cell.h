@@ -48,7 +48,7 @@ public:
     Coord getPosition();
     uint8_t getWalls();
     uint8_t getSignature();
-    void destroyWall(Direction dir);
+    void destroyWall(DirFlag dir);
     void addSignature(DirFlag dir);
     void removeSignature(DirFlag dir);
 };

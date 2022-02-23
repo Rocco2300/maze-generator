@@ -11,9 +11,12 @@ private:
 public:
     Maze();
     Maze(Coord size);
-    Coord getSize();
+    void removeNeighbourSignatures(Coord coord);
+    void generateMaze();
     Cell* operator[](int index);
     bool isCellInBounds(Coord pos);
     void printWalls();
     void printSignatures();
+private:
+    void generate(Coord coord);
 };

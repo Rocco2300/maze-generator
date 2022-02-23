@@ -27,12 +27,11 @@ uint8_t Cell::getSignature()
     return signature;
 }
 
-void Cell::destroyWall(Direction dir)
+void Cell::destroyWall(DirFlag dir)
 {
     // We use 2^wallDir to get the mask of the wall
     // since we store the walls as binary 0b1111
-    uint8_t wallDir = std::pow(2, (uint8_t)dir);
-    walls &= ~wallDir;
+    walls &= ~static_cast<uint8_t>(dir);
 }
 
 void Cell::addSignature(DirFlag dir)

@@ -18,13 +18,14 @@ int main()
     // }
 
     Maze maze({5, 4});
-    maze.printSignatures();
-    int signature = maze[0][0].getSignature();
-    int size = randDirTable[signature].size;
-    for(int i = 0; i < size; i++)
-    {
-        std::cout << (int)randDirTable[signature].directions[i] << " ";
-    }
-    std::cout << std::endl;
+    maze.generateMaze();
+    maze.printWalls();
+    // int signature = maze[0][0].getSignature();
+    // int size = randDirTable[signature].size;
+    // for(int i = 0; i < size; i++)
+    // {
+    //     std::cout << (int)randDirTable[signature].directions[i] << " ";
+    // }
+    // std::cout << std::endl;
     return 0;
 }

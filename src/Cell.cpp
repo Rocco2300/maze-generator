@@ -35,9 +35,14 @@ void Cell::destroyWall(Direction dir)
     walls &= ~wallDir;
 }
 
-void Cell::updateSignature(DirFlag dir)
+void Cell::addSignature(DirFlag dir)
 {
     signature |= static_cast<uint8_t>(dir);
+}
+
+void Cell::removeSignature(DirFlag dir)
+{
+    signature &= ~static_cast<uint8_t>(dir);
 }
 
 std::ostream& operator<<(std::ostream& out, const Coord& coord)

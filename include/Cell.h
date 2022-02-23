@@ -22,7 +22,6 @@ struct Coord
 
 enum class Direction
 {
-    NONE = -1,
     North = 0,
     East,
     South,
@@ -50,5 +49,6 @@ public:
     uint8_t getWalls();
     uint8_t getSignature();
     void destroyWall(Direction dir);
-    void updateSignature(DirFlag dir);
+    void addSignature(DirFlag dir);
+    void removeSignature(DirFlag dir);
 };

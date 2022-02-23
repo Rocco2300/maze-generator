@@ -22,7 +22,7 @@ Maze::Maze(Coord size)
                 Coord nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
-                    grid[y][x].updateSignature(dirToFlag[dir]);
+                    grid[y][x].addSignature(dirToFlag[dir]);
                 }
             }
         }

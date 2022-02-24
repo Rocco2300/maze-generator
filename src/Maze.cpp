@@ -29,6 +29,27 @@ Maze::Maze(Coord size)
     }
 }
 
+void Maze::reset()
+{
+    for(int y = 0; y < size.y; y++)
+    {
+        for(int x = 0; x < size.x; x++)
+        {
+            Coord currentCoord(y, x);
+
+            for(int dir = 0; dir < 4; dir++)
+            {
+                Coord nextCoord = currentCoord + dirOffset[dir];
+                if(isCellInBounds(nextCoord))
+                {
+                    grid[y][x].addSignature(dirToFlag[dir]);
+                    grid[y][x].resetWalls();
+                }
+            }
+        }
+    }
+}
+
 void Maze::removeNeighbourSignatures(Coord coord)
 {
     for(int dir = 0; dir < 4; dir++)
@@ -45,9 +66,10 @@ void Maze::removeNeighbourSignatures(Coord coord)
 
 void Maze::generateMaze()
 {
+
     Coord start;
-    start.x = rand() % size.x;
-    start.y = rand() % size.y;
+    start.x = rand() % size.y;
+    start.y = rand() % size.x;
 
     generate(start);
 }

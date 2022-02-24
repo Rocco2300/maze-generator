@@ -27,6 +27,11 @@ uint8_t Cell::getSignature()
     return signature;
 }
 
+void Cell::resetWalls()
+{
+    walls = 15;
+}
+
 void Cell::destroyWall(DirFlag dir)
 {
     // We use 2^wallDir to get the mask of the wall

@@ -7,25 +7,17 @@
 int main()
 {
     srand(time(NULL));
-    // for(int i = 0; i < 16; i++)
-    // {
-    //     int size = randDirTable[i].size;
-    //     for(int j = 0; j < size; j++)
-    //     {
-    //         std::cout << (int)randDirTable[i].directions[j] << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
 
-    Maze maze({5, 4});
-    maze.generateMaze();
-    maze.printWalls();
-    // int signature = maze[0][0].getSignature();
-    // int size = randDirTable[signature].size;
-    // for(int i = 0; i < size; i++)
-    // {
-    //     std::cout << (int)randDirTable[signature].directions[i] << " ";
-    // }
-    // std::cout << std::endl;
+    Maze maze({100, 100});
+    // maze.generateMaze();
+    int cnt = 0;
+    for(int i = 0; i < 1000; i++)
+    {
+        cnt++;
+        maze.generateMaze();
+        maze.reset();
+    }
+    std::cout << cnt << std::endl;
+    // maze.printSignatures();
     return 0;
 }

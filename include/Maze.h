@@ -11,6 +11,7 @@ private:
 public:
     Maze();
     Maze(Coord size);
+    void reset();
     void removeNeighbourSignatures(Coord coord);
     void generateMaze();
     Cell* operator[](int index);

@@ -66,12 +66,11 @@ void Maze::removeNeighbourSignatures(Coord coord)
 
 void Maze::generateMaze()
 {
-
     Coord start;
     start.x = rand() % size.y;
     start.y = rand() % size.x;
 
-    generate(start);
+    generate2(start);
 }
 
 void Maze::generate(Coord coord)
@@ -92,6 +91,35 @@ void Maze::generate(Coord coord)
         grid[coord.x][coord.y].removeSignature(dirToFlag[(int)nextDir]);
 
         generate(offset);
+    }
+}
+
+void Maze::generate2(Coord start)
+{
+    stack.push(start);
+
+    while(!stack.empty())
+    {
+        auto coord = stack.top();
+        removeNeighbourSignatures(coord);
+        
+        if(grid[coord.x][coord.y].getSignature() != 0)
+        {
+            auto sign = grid[coord.x][coord.y].getSignature();
+            auto randIndex = rand() % randDirTableSizes[sign];
+            auto nextDir = randDirTable[sign][randIndex];
+            auto offset = coord + dirOffset[(int)nextDir];
+
+            grid[coord.x][coord.y].destroyWall(dirToFlag[(int)nextDir]);
+            grid[offset.x][offset.y].destroyWall(dirToFlag[(int)oppositeDir[(int)nextDir]]);
+
+            grid[coord.x][coord.y].removeSignature(dirToFlag[(int)nextDir]);
+            stack.push(offset);
+        }
+        else
+        {
+            stack.pop();
+        }
     }
 }
 

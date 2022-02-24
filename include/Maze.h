@@ -2,10 +2,12 @@
 
 #include "Grid.h"
 #include "Constants.h"
+#include <stack>
 
 class Maze
 {
 private:
+    std::stack<Coord> stack;
     Grid<Cell> grid;
     Coord size;
 public:
@@ -20,4 +22,5 @@ public:
     void printSignatures();
 private:
     void generate(Coord coord);
+    void generate2(Coord start);
 };

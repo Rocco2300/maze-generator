@@ -20,19 +20,34 @@ const Direction oppositeDir[4] = {
     Direction::East
 };
 
-struct Data
+constexpr std::array<uint8_t, 16> buildRandDirTableSizes()
 {
-    std::array<Direction, 4> directions = {};
-    int size;
-};
-
-constexpr std::array<Data, 16> buildRandDirTable()
-{
-    std::array<Data, 16> result = {};
+    std::array<uint8_t, 16> result = {};
 
     for(int i = 0; i < 16; i++)
     {
         int cnt = 0;
+
+        for(int dir = 0; dir < 4; dir++)
+        {
+            if(i & (int)dirToFlag[dir])
+                cnt++;
+        }
+        
+        result[i] = cnt;
+    }
+
+    return result;
+}
+
+constexpr std::array<uint8_t, 16> randDirTableSizes = buildRandDirTableSizes();
+
+constexpr std::array<std::array<Direction, 4>, 16> buildRandDirTable()
+{
+    std::array<std::array<Direction, 4>, 16> result = {};
+
+    for(int i = 0; i < 16; i++)
+    {
         int index = 0;
         for(int dir = 0; dir < 4; dir++)
         {
@@ -44,22 +59,19 @@ constexpr std::array<Data, 16> buildRandDirTable()
             */
             if(i & (int)dirToFlag[dir])
             {
-                result[i].directions[index++] = (Direction)dir;
+                result[i][index++] = (Direction)dir;
                 continue;
             }
-            cnt++;
         }
 
         // Buffer the unused space with garbage data
-        for(int j = index; j < cnt; j++)
+        for(int j = index; j < 4; j++)
         {
-            result[i].directions[j] = Direction::North;
+            result[i][j] = Direction::North;
         }
-        // Set the size as the last index we checked at (1)
-        result[i].size = index;
     }
 
     return result;
 }
 
-const std::array<Data, 16> randDirTable = buildRandDirTable();
+const std::array<std::array<Direction, 4>, 16> randDirTable = buildRandDirTable();

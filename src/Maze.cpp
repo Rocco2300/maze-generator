@@ -60,8 +60,8 @@ void Maze::generate(Coord coord)
     while(grid[coord.x][coord.y].getSignature() != 0)
     {
         auto sign = grid[coord.x][coord.y].getSignature();
-        auto randIndex = rand() % randDirTable[sign].size;
-        auto nextDir = randDirTable[sign].directions[randIndex];
+        auto randIndex = rand() % randDirTableSizes[sign];
+        auto nextDir = randDirTable[sign][randIndex];
         auto offset = coord + dirOffset[(int)nextDir];
 
         grid[coord.x][coord.y].destroyWall(dirToFlag[(int)nextDir]);

@@ -71,7 +71,6 @@ void Maze::generateViewableMaze()
     {
         for(int x = 1; x < size.x * 2 + 1; x += 2)
         {
-            maze[y][x] = ' ';
             for(int corner = 0; corner < 4; corner++)
             {
                 auto offset = cornerDirOffset[corner];
@@ -81,8 +80,12 @@ void Maze::generateViewableMaze()
             for(int dir = 0; dir < 4; dir++)
             {
                 auto offset = dirOffset[dir];
-                maze[y + offset.y][x + offset.x] = ' ';
+                if(dir % 2 == 0)
+                    maze[y + offset.y][x + offset.x] = '|';
+                else
+                    maze[y + offset.y][x + offset.x] = (char)196;
             }
+            maze[y][x] = ' ';
         }
     }
 }
@@ -153,7 +156,7 @@ void Maze::printMaze()
     {
         for(int x = 0; x < size.x * 2 + 1; x ++)
         {
-            if(y % 2 == 0 && x % 2 != 0)
+            if(x % 2 != 0)
                 std::cout << " " << maze[y][x] << " ";
             else 
                 std::cout << maze[y][x];

@@ -5,6 +5,7 @@
 #include <array>
 
 const Coord dirOffset[4] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+const Coord cornerDirOffset[4] = {{-1, -1}, {-1, 1}, {1, 1}, {1, -1}};
 
 constexpr DirFlag dirToFlag[4] = {
     DirFlag::North,

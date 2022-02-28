@@ -9,6 +9,7 @@ Maze::Maze(Coord size)
 {
     this->size = size;
     grid = Grid<Cell>(size);
+    maze = Grid<char>({size.x * 2 + 1, size.y * 2 + 1});
 
     for(int y = 0; y < size.y; y++)
     {
@@ -64,6 +65,28 @@ void Maze::removeNeighbourSignatures(Coord coord)
     }
 }
 
+void Maze::generateViewableMaze()
+{
+    for(int y = 1; y < size.y * 2 + 1; y += 2)
+    {
+        for(int x = 1; x < size.x * 2 + 1; x += 2)
+        {
+            maze[y][x] = ' ';
+            for(int corner = 0; corner < 4; corner++)
+            {
+                auto offset = cornerDirOffset[corner];
+                maze[y + offset.y][x + offset.x] = '+';
+            }
+            
+            for(int dir = 0; dir < 4; dir++)
+            {
+                auto offset = dirOffset[dir];
+                maze[y + offset.y][x + offset.x] = ' ';
+            }
+        }
+    }
+}
+
 void Maze::generateMaze()
 {
     Coord start;
@@ -71,6 +94,7 @@ void Maze::generateMaze()
     start.y = rand() % size.x;
 
     generate2(start);
+    generateViewableMaze();
 }
 
 void Maze::generate(Coord coord)
@@ -120,6 +144,21 @@ void Maze::generate2(Coord start)
         {
             stack.pop();
         }
+    }
+}
+
+void Maze::printMaze()
+{
+    for(int y = 0; y < size.y * 2 + 1; y ++)
+    {
+        for(int x = 0; x < size.x * 2 + 1; x ++)
+        {
+            if(y % 2 == 0 && x % 2 != 0)
+                std::cout << " " << maze[y][x] << " ";
+            else 
+                std::cout << maze[y][x];
+        }
+        std::cout << std::endl;
     }
 }
 

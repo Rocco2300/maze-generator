@@ -9,6 +9,7 @@ class Maze
 private:
     std::stack<Coord> stack;
     Grid<Cell> grid;
+    Grid<char> maze;
     Coord size;
 public:
     Maze();
@@ -20,7 +21,9 @@ public:
     bool isCellInBounds(Coord pos);
     void printWalls();
     void printSignatures();
+    void printMaze();
 private:
     void generate(Coord coord);
     void generate2(Coord start);
+    void generateViewableMaze();
 };

@@ -15,12 +15,10 @@ int main()
     const Coord size(10, 10);
     Maze maze({size.x, size.y});
 
-    auto start = high_resolution_clock::now();
+    // auto start = high_resolution_clock::now();
     maze.generateMaze();
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(end - start);
-    std::cout << "Generation of the " << size.x << "x" << size.y << " maze took: " << duration.count() << " microseconds." << std::endl;
-    maze.printWalls();
+    // auto end = high_resolution_clock::now();
+    // auto duration = duration_cast<microseconds>(end - start);
     maze.printMaze();
     return 0;
 }

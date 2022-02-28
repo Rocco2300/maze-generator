@@ -17,6 +17,11 @@ Coord Cell::getPosition()
     return pos;
 }
 
+bool Cell::hasWall(DirFlag dir)
+{
+    return walls & (int)dir;
+}
+
 uint8_t Cell::getWalls()
 {
     return walls;   

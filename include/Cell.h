@@ -46,6 +46,7 @@ public:
     Cell();
     Cell(Coord pos);
     Coord getPosition();
+    bool hasWall(DirFlag dir);
     uint8_t getWalls();
     uint8_t getSignature();
     void resetWalls();

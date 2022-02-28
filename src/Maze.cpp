@@ -28,6 +28,14 @@ Maze::Maze(Coord size)
             }
         }
     }
+
+    for(int y = 0; y < size.y * 2 + 1; y++)
+    {
+        for(int x = 0; x < size.y * 2 + 1; x++)
+        {
+            maze[y][x] = ' ';
+        }
+    }
 }
 
 void Maze::reset()
@@ -71,6 +79,8 @@ void Maze::generateViewableMaze()
     {
         for(int x = 1; x < size.x * 2 + 1; x += 2)
         {
+            auto cell = grid[(y-1)/2][(x-1)/2];
+
             for(int corner = 0; corner < 4; corner++)
             {
                 auto offset = cornerDirOffset[corner];
@@ -80,10 +90,15 @@ void Maze::generateViewableMaze()
             for(int dir = 0; dir < 4; dir++)
             {
                 auto offset = dirOffset[dir];
-                if(dir % 2 == 0)
-                    maze[y + offset.y][x + offset.x] = '|';
-                else
-                    maze[y + offset.y][x + offset.x] = (char)196;
+                auto dirFlag = dirToFlag[dir];
+
+                if(cell.hasWall(dirFlag))
+                {
+                    if(dir % 2 != 0)
+                        maze[y + offset.x][x + offset.y] = '|';
+                    else
+                        maze[y + offset.x][x + offset.y] = (char)196;
+                }
             }
             maze[y][x] = ' ';
         }

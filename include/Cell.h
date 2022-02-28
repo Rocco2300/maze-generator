@@ -42,6 +42,7 @@ private:
     Coord pos;
     uint8_t signature;
     uint8_t walls;
+    bool obstacle;
 public:
     Cell();
     Cell(Coord pos);
@@ -53,4 +54,7 @@ public:
     void destroyWall(DirFlag dir);
     void addSignature(DirFlag dir);
     void removeSignature(DirFlag dir);
+    void setSignature(uint8_t signature);
+    void setObstacle(bool value);
+    bool isObstacle();
 };

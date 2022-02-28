@@ -16,6 +16,7 @@ public:
     Maze(Coord size);
     void reset();
     void removeNeighbourSignatures(Coord coord);
+    void setObstacle(Coord coord, bool value);
     void generateMaze();
     Cell* operator[](int index);
     bool isCellInBounds(Coord pos);

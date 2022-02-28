@@ -9,7 +9,7 @@ Maze::Maze(Coord size)
 {
     this->size = size;
     grid = Grid<Cell>(size);
-    maze = Grid<char>({size.x * 2 + 1, size.y * 2 + 1});
+    maze = Grid<char>({size.y * 2 + 1, size.x * 2 + 1});
 
     for(int y = 0; y < size.y; y++)
     {
@@ -73,6 +73,13 @@ void Maze::removeNeighbourSignatures(Coord coord)
     }
 }
 
+void Maze::setObstacle(Coord coord, bool value)
+{
+    grid[coord.x][coord.y].setObstacle(true);
+    grid[coord.x][coord.y].setSignature(0);
+    removeNeighbourSignatures(coord);
+}
+
 void Maze::generateViewableMaze()
 {
     for(int y = 1; y < size.y * 2 + 1; y += 2)
@@ -80,6 +87,8 @@ void Maze::generateViewableMaze()
         for(int x = 1; x < size.x * 2 + 1; x += 2)
         {
             auto cell = grid[(y-1)/2][(x-1)/2];
+            if(cell.isObstacle())
+                continue;
 
             for(int corner = 0; corner < 4; corner++)
             {
@@ -108,8 +117,11 @@ void Maze::generateViewableMaze()
 void Maze::generateMaze()
 {
     Coord start;
-    start.x = rand() % size.y;
-    start.y = rand() % size.x;
+    do
+    {
+        start.x = rand() % size.y;
+        start.y = rand() % size.x;
+    } while(grid[start.y][start.x].isObstacle());
 
     generate2(start);
     generateViewableMaze();

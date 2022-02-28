@@ -10,6 +10,7 @@ Cell::Cell(Coord pos)
     this->pos = pos;
     this->walls = 15;
     this->signature = 0;
+    this->obstacle = false;
 }
 
 Coord Cell::getPosition()
@@ -52,6 +53,21 @@ void Cell::addSignature(DirFlag dir)
 void Cell::removeSignature(DirFlag dir)
 {
     signature &= ~static_cast<uint8_t>(dir);
+}
+
+void Cell::setSignature(uint8_t signature)
+{
+    this->signature = signature;
+}
+
+void Cell::setObstacle(bool value)
+{
+    obstacle = value;
+}
+
+bool Cell::isObstacle()
+{
+    return obstacle;
 }
 
 std::ostream& operator<<(std::ostream& out, const Coord& coord)

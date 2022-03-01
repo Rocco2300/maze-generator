@@ -9,7 +9,7 @@ Maze::Maze(Coord size)
 {
     this->size = size;
     grid = Grid<Cell>(size);
-    maze = Grid<uint8_t>({size.y * 2 + 1, size.x * 2 + 1});
+    maze = Grid<uint8_t>({size.x * 2 + 1, size.y * 2 + 1});
 
     for(int y = 0; y < size.y; y++)
     {
@@ -132,7 +132,8 @@ void Maze::generateMaze()
     {
         start.x = rand() % size.y;
         start.y = rand() % size.x;
-    } while(grid[start.y][start.x].isObstacle());
+    } while(grid[start.x][start.y].isObstacle());
+    std::cout << start.x << " " << start.y << std::endl;
 
     generate(start);
     generateViewableMaze();
@@ -226,6 +227,18 @@ void Maze::printSignatures()
         for(int x = 0; x < size.x; x++)
         {
             std::cout << (int)grid[y][x].getSignature() << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Maze::printObstacles()
+{
+    for(int y = 0; y < size.y; y++)
+    {
+        for(int x = 0; x < size.x; x++)
+        {
+            std::cout << grid[y][x].isObstacle() << " ";
         }
         std::cout << std::endl;
     }

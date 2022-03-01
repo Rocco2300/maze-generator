@@ -23,6 +23,7 @@ public:
     void printWalls();
     void printSignatures();
     void printMaze();
+    void printObstacles();
 private:
     void generate(Coord start);
     void generateViewableMaze();

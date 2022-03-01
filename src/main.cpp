@@ -39,6 +39,6 @@ int main()
     }
 
     maze.generateMaze();
-    maze.printMaze2();
+    maze.printMaze();
     return 0;
 }

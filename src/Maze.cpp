@@ -93,40 +93,6 @@ void Maze::generateViewableMaze()
             auto cell = grid[(y-1)/2][(x-1)/2];
             if(cell.isObstacle())
                 continue;
-
-            for(int corner = 0; corner < 4; corner++)
-            {
-                auto offset = cornerDirOffset[corner];
-                maze[y + offset.y][x + offset.x] = '+';
-            }
-            
-            for(int dir = 0; dir < 4; dir++)
-            {
-                auto offset = dirOffset[dir];
-                auto dirFlag = dirToFlag[dir];
-
-                if(cell.hasWall(dirFlag))
-                {
-                    if(dir % 2 != 0)
-                        maze[y + offset.x][x + offset.y] = '|';
-                    else
-                        maze[y + offset.x][x + offset.y] = (char)196;
-                }
-            }
-            maze[y][x] = ' ';
-        }
-    }
-}
-
-void Maze::generateViewableMaze2()
-{
-    for(int y = 1; y < size.y * 2 + 1; y += 2)
-    {
-        for(int x = 1; x < size.x * 2 + 1; x += 2)
-        {
-            auto cell = grid[(y-1)/2][(x-1)/2];
-            if(cell.isObstacle())
-                continue;
             
             if(cell.hasWall(DirFlag::North))
             {
@@ -168,32 +134,11 @@ void Maze::generateMaze()
         start.y = rand() % size.x;
     } while(grid[start.y][start.x].isObstacle());
 
-    generate2(start);
-    generateViewableMaze2();
+    generate(start);
+    generateViewableMaze();
 }
 
-void Maze::generate(Coord coord)
-{
-    // Set as visited for the neighbours
-    removeNeighbourSignatures(coord);
-
-    while(grid[coord.x][coord.y].getSignature() != 0)
-    {
-        auto sign = grid[coord.x][coord.y].getSignature();
-        auto randIndex = rand() % randDirTableSizes[sign];
-        auto nextDir = randDirTable[sign][randIndex];
-        auto offset = coord + dirOffset[(int)nextDir];
-
-        grid[coord.x][coord.y].destroyWall(dirToFlag[(int)nextDir]);
-        grid[offset.x][offset.y].destroyWall(dirToFlag[(int)oppositeDir[(int)nextDir]]);
-
-        grid[coord.x][coord.y].removeSignature(dirToFlag[(int)nextDir]);
-
-        generate(offset);
-    }
-}
-
-void Maze::generate2(Coord start)
+void Maze::generate(Coord start)
 {
     stack.push(start);
 
@@ -224,21 +169,6 @@ void Maze::generate2(Coord start)
 
 void Maze::printMaze()
 {
-    for(int y = 0; y < size.y * 2 + 1; y ++)
-    {
-        for(int x = 0; x < size.x * 2 + 1; x ++)
-        {
-            if(x % 2 != 0)
-                std::cout << " " << maze[y][x] << " ";
-            else 
-                std::cout << maze[y][x];
-        }
-        std::cout << std::endl;
-    }
-}
-
-void Maze::printMaze2()
-{
     for(int y = 0; y < size.y * 2 + 1; y++)
     {
         for(int x = 0; x < size.x * 2 + 1; x++)
@@ -262,9 +192,7 @@ void Maze::printMaze2()
             case 0b1110: std::cout << reinterpret_cast<const char*>(u8"\u2534\u2500"); break;
             case 0b1111: std::cout << reinterpret_cast<const char*>(u8"\u253C\u2500"); break;
             }
-            // std::cout << (int)maze[y][x] << " ";
         }
-        // std::cout << std::endl;
         std::cout << std::endl;
     }
 }

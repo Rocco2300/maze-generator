@@ -9,7 +9,7 @@ Maze::Maze(Coord size)
 {
     this->size = size;
     grid = Grid<Cell>(size);
-    maze = Grid<char>({size.y * 2 + 1, size.x * 2 + 1});
+    maze = Grid<uint8_t>({size.y * 2 + 1, size.x * 2 + 1});
 
     for(int y = 0; y < size.y; y++)
     {
@@ -33,7 +33,7 @@ Maze::Maze(Coord size)
     {
         for(int x = 0; x < size.y * 2 + 1; x++)
         {
-            maze[y][x] = ' ';
+            maze[y][x] = (uint8_t)0;
         }
     }
 }
@@ -75,9 +75,13 @@ void Maze::removeNeighbourSignatures(Coord coord)
 
 void Maze::setObstacle(Coord coord, bool value)
 {
-    grid[coord.x][coord.y].setObstacle(true);
-    grid[coord.x][coord.y].setSignature(0);
-    removeNeighbourSignatures(coord);
+    grid[coord.x][coord.y].setObstacle(value);
+
+    if(value)
+    {
+        grid[coord.x][coord.y].setSignature(0);
+        removeNeighbourSignatures(coord);
+    }
 }
 
 void Maze::generateViewableMaze()
@@ -114,6 +118,47 @@ void Maze::generateViewableMaze()
     }
 }
 
+void Maze::generateViewableMaze2()
+{
+    for(int y = 1; y < size.y * 2 + 1; y += 2)
+    {
+        for(int x = 1; x < size.x * 2 + 1; x += 2)
+        {
+            auto cell = grid[(y-1)/2][(x-1)/2];
+            if(cell.isObstacle())
+                continue;
+            
+            if(cell.hasWall(DirFlag::North))
+            {
+                maze[y-1][x-1] |= static_cast<uint8_t>(DirFlag::West);
+                maze[y-1][x  ] |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze[y-1][x+1] |= static_cast<uint8_t>(DirFlag::East);
+            }
+
+            if(cell.hasWall(DirFlag::East))
+            {
+                maze[y-1][x+1] |= static_cast<uint8_t>(DirFlag::North);
+                maze[y  ][x+1] |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze[y+1][x+1] |= static_cast<uint8_t>(DirFlag::South);
+            }
+
+            if(cell.hasWall(DirFlag::South))
+            {
+                maze[y+1][x-1] |= static_cast<uint8_t>(DirFlag::West);
+                maze[y+1][x  ] |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze[y+1][x+1] |= static_cast<uint8_t>(DirFlag::East);
+            }
+
+            if(cell.hasWall(DirFlag::West))
+            {
+                maze[y-1][x-1] |= static_cast<uint8_t>(DirFlag::North);
+                maze[y  ][x-1] |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze[y+1][x-1] |= static_cast<uint8_t>(DirFlag::South);
+            }
+        }
+    }
+}
+
 void Maze::generateMaze()
 {
     Coord start;
@@ -124,7 +169,7 @@ void Maze::generateMaze()
     } while(grid[start.y][start.x].isObstacle());
 
     generate2(start);
-    generateViewableMaze();
+    generateViewableMaze2();
 }
 
 void Maze::generate(Coord coord)
@@ -188,6 +233,38 @@ void Maze::printMaze()
             else 
                 std::cout << maze[y][x];
         }
+        std::cout << std::endl;
+    }
+}
+
+void Maze::printMaze2()
+{
+    for(int y = 0; y < size.y * 2 + 1; y++)
+    {
+        for(int x = 0; x < size.x * 2 + 1; x++)
+        {
+            switch(maze[y][x])
+            {
+            case 0b0000: std::cout << reinterpret_cast<const char*>(u8"  ");      break;
+            case 0b0001: std::cout << reinterpret_cast<const char*>(u8"\u2577 "); break;
+            case 0b0010: std::cout << reinterpret_cast<const char*>(u8"\u2574 "); break;
+            case 0b0011: std::cout << reinterpret_cast<const char*>(u8"\u2510 "); break;    
+            case 0b0100: std::cout << reinterpret_cast<const char*>(u8"\u2575 "); break;
+            case 0b0101: std::cout << reinterpret_cast<const char*>(u8"\u2502 "); break;
+            case 0b0110: std::cout << reinterpret_cast<const char*>(u8"\u2518 "); break;
+            case 0b0111: std::cout << reinterpret_cast<const char*>(u8"\u2524 "); break;
+            case 0b1000: std::cout << reinterpret_cast<const char*>(u8" \u2576"); break;
+            case 0b1001: std::cout << reinterpret_cast<const char*>(u8"\u250C\u2500"); break;
+            case 0b1010: std::cout << reinterpret_cast<const char*>(u8"\u2500\u2500"); break;
+            case 0b1011: std::cout << reinterpret_cast<const char*>(u8"\u252C\u2500"); break;
+            case 0b1100: std::cout << reinterpret_cast<const char*>(u8"\u2514\u2500"); break;
+            case 0b1101: std::cout << reinterpret_cast<const char*>(u8"\u251C\u2500"); break;
+            case 0b1110: std::cout << reinterpret_cast<const char*>(u8"\u2534\u2500"); break;
+            case 0b1111: std::cout << reinterpret_cast<const char*>(u8"\u253C\u2500"); break;
+            }
+            // std::cout << (int)maze[y][x] << " ";
+        }
+        // std::cout << std::endl;
         std::cout << std::endl;
     }
 }

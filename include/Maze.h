@@ -9,7 +9,7 @@ class Maze
 private:
     std::stack<Coord> stack;
     Grid<Cell> grid;
-    Grid<char> maze;
+    Grid<uint8_t> maze;
     Coord size;
 public:
     Maze();
@@ -23,8 +23,10 @@ public:
     void printWalls();
     void printSignatures();
     void printMaze();
+    void printMaze2();
 private:
     void generate(Coord coord);
     void generate2(Coord start);
     void generateViewableMaze();
+    void generateViewableMaze2();
 };

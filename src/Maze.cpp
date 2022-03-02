@@ -74,19 +74,11 @@ void Maze::removeNeighbourSignatures(Coord coord)
     }
 }
 
-void Maze::setObstacle(Coord coord, bool value)
+void Maze::setObstacle(Coord coord)
 {
-    grid[coord.x][coord.y].setObstacle(value);
-
-    if(value)
-    {
-        grid[coord.x][coord.y].setSignature(0);
-        removeNeighbourSignatures(coord);
-    }
-    else
-    {
-        
-    }
+    grid[coord.x][coord.y].setObstacle(true);
+    grid[coord.x][coord.y].setSignature(0);
+    removeNeighbourSignatures(coord);
 }
 
 void Maze::generateViewableMaze()

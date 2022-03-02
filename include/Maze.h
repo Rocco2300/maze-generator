@@ -24,6 +24,7 @@ public:
     void printSignatures();
     void printMaze();
     void printObstacles();
+    void printMazeGrid();
 private:
     void generate(Coord start);
     void generateViewableMaze();

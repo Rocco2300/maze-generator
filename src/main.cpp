@@ -13,7 +13,7 @@ int main()
     srand(time(NULL));
 
 
-    const Coord size(11, 11);
+    const Coord size(11, 9);
     Maze maze({size.x, size.y});
 
     maze.setObstacle({0, 0}, true);

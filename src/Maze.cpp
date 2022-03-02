@@ -1,5 +1,6 @@
 #include "Maze.h"
 #include <iostream>
+#include <iomanip>
 
 Maze::Maze()
 {
@@ -31,9 +32,9 @@ Maze::Maze(Coord size)
 
     for(int y = 0; y < size.y * 2 + 1; y++)
     {
-        for(int x = 0; x < size.y * 2 + 1; x++)
+        for(int x = 0; x < size.x * 2 + 1; x++)
         {
-            maze[y][x] = (uint8_t)0;
+            maze[y][x] = 0;
         }
     }
 }
@@ -81,6 +82,10 @@ void Maze::setObstacle(Coord coord, bool value)
     {
         grid[coord.x][coord.y].setSignature(0);
         removeNeighbourSignatures(coord);
+    }
+    else
+    {
+        
     }
 }
 
@@ -176,15 +181,15 @@ void Maze::printMaze()
         {
             switch(maze[y][x])
             {
-            case 0b0000: std::cout << reinterpret_cast<const char*>(u8"  ");      break;
-            case 0b0001: std::cout << reinterpret_cast<const char*>(u8"\u2577 "); break;
-            case 0b0010: std::cout << reinterpret_cast<const char*>(u8"\u2574 "); break;
-            case 0b0011: std::cout << reinterpret_cast<const char*>(u8"\u2510 "); break;    
-            case 0b0100: std::cout << reinterpret_cast<const char*>(u8"\u2575 "); break;
-            case 0b0101: std::cout << reinterpret_cast<const char*>(u8"\u2502 "); break;
-            case 0b0110: std::cout << reinterpret_cast<const char*>(u8"\u2518 "); break;
-            case 0b0111: std::cout << reinterpret_cast<const char*>(u8"\u2524 "); break;
-            case 0b1000: std::cout << reinterpret_cast<const char*>(u8" \u2576"); break;
+            case 0b0000: std::cout << reinterpret_cast<const char*>(u8"  ");           break;
+            case 0b0001: std::cout << reinterpret_cast<const char*>(u8"\u2577 ");      break;
+            case 0b0010: std::cout << reinterpret_cast<const char*>(u8"\u2574 ");      break;
+            case 0b0011: std::cout << reinterpret_cast<const char*>(u8"\u2510 ");      break;    
+            case 0b0100: std::cout << reinterpret_cast<const char*>(u8"\u2575 ");      break;
+            case 0b0101: std::cout << reinterpret_cast<const char*>(u8"\u2502 ");      break;
+            case 0b0110: std::cout << reinterpret_cast<const char*>(u8"\u2518 ");      break;
+            case 0b0111: std::cout << reinterpret_cast<const char*>(u8"\u2524 ");      break;
+            case 0b1000: std::cout << reinterpret_cast<const char*>(u8" \u2576");      break;
             case 0b1001: std::cout << reinterpret_cast<const char*>(u8"\u250C\u2500"); break;
             case 0b1010: std::cout << reinterpret_cast<const char*>(u8"\u2500\u2500"); break;
             case 0b1011: std::cout << reinterpret_cast<const char*>(u8"\u252C\u2500"); break;
@@ -209,7 +214,7 @@ void Maze::printWalls()
     {
         for(int x = 0; x < size.x; x++)
         {
-            std::cout << (int)grid[y][x].getWalls() << " ";
+            std::cout << std::setw(2) << (int)grid[y][x].getWalls() << " ";
         }
         std::cout << std::endl;
     }
@@ -239,6 +244,18 @@ void Maze::printObstacles()
         for(int x = 0; x < size.x; x++)
         {
             std::cout << grid[y][x].isObstacle() << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void Maze::printMazeGrid()
+{
+    for(int y = 0; y < size.y * 2 + 1; y++)
+    {
+        for(int x = 0; x < size.x * 2 + 1; x++)
+        {
+            std::cout << std::setw(2) << (int)maze[y][x] << " ";
         }
         std::cout << std::endl;
     }

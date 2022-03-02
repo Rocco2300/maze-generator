@@ -38,7 +38,7 @@ Grid<T>::Grid(const Grid& grid)
 template <typename T>
 T* Grid<T>::operator[](int index)
 {
-    assert(index < size.x && index < size.y);
+    assert(index < size.x || index < size.y);
     return data[index];
 }
 

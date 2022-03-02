@@ -6,6 +6,12 @@
 
 #define DEBUG false
 
+enum class OutputType
+{
+    Data,
+    Maze
+};
+
 class Maze
 {
 private:
@@ -19,7 +25,7 @@ public:
     void reset();
     void setObstacle(Coord coord);
     void generateMaze();
-    void printMaze();
+    void output(std::ostream& out, OutputType type);
 #if DEBUG
     Cell* operator[](int index);
     void printWalls();

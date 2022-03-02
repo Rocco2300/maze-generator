@@ -13,26 +13,6 @@ Cell::Cell(Coord pos)
     this->obstacle = false;
 }
 
-Coord Cell::getPosition()
-{
-    return pos;
-}
-
-bool Cell::hasWall(DirFlag dir)
-{
-    return walls & (int)dir;
-}
-
-uint8_t Cell::getWalls()
-{
-    return walls;   
-}
-
-uint8_t Cell::getSignature()
-{
-    return signature;
-}
-
 void Cell::resetWalls()
 {
     walls = 15;
@@ -65,13 +45,27 @@ void Cell::setObstacle(bool value)
     obstacle = value;
 }
 
+Coord Cell::getPosition()
+{
+    return pos;
+}
+
+bool Cell::hasWall(DirFlag dir)
+{
+    return walls & (int)dir;
+}
+
+uint8_t Cell::getWalls()
+{
+    return walls;   
+}
+
+uint8_t Cell::getSignature()
+{
+    return signature;
+}
+
 bool Cell::isObstacle()
 {
     return obstacle;
 }
-
-std::ostream& operator<<(std::ostream& out, const Coord& coord)
-{
-    out << "(" << coord.x << ", " << coord.y << ")";
-    return out;
-}   

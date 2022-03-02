@@ -81,7 +81,7 @@ void Maze::setObstacle(Coord coord)
     removeNeighbourSignatures(coord);
 }
 
-void Maze::generateViewableMaze()
+void Maze::generateMazeGrid()
 {
     for(int y = 1; y < size.y * 2 + 1; y += 2)
     {
@@ -130,10 +130,9 @@ void Maze::generateMaze()
         start.x = rand() % size.y;
         start.y = rand() % size.x;
     } while(grid[start.x][start.y].isObstacle());
-    std::cout << start.x << " " << start.y << std::endl;
 
     generate(start);
-    generateViewableMaze();
+    generateMazeGrid();
 }
 
 void Maze::generate(Coord start)
@@ -195,6 +194,12 @@ void Maze::printMaze()
     }
 }
 
+bool Maze::isCellInBounds(Coord pos)
+{
+    return pos.x >= 0 && pos.x < size.y && pos.y >= 0 && pos.y < size.x;
+}
+
+#if DEBUG
 Cell* Maze::operator[](int index)
 {
     return grid[index];
@@ -210,11 +215,6 @@ void Maze::printWalls()
         }
         std::cout << std::endl;
     }
-}
-
-bool Maze::isCellInBounds(Coord pos)
-{
-    return pos.x >= 0 && pos.x < size.y && pos.y >= 0 && pos.y < size.x;
 }
 
 void Maze::printSignatures()
@@ -252,3 +252,4 @@ void Maze::printMazeGrid()
         std::cout << std::endl;
     }
 }
+#endif

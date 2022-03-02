@@ -46,15 +46,16 @@ private:
 public:
     Cell();
     Cell(Coord pos);
-    Coord getPosition();
-    bool hasWall(DirFlag dir);
-    uint8_t getWalls();
-    uint8_t getSignature();
     void resetWalls();
     void destroyWall(DirFlag dir);
     void addSignature(DirFlag dir);
     void removeSignature(DirFlag dir);
     void setSignature(uint8_t signature);
     void setObstacle(bool value);
+    
+    Coord getPosition();
+    bool hasWall(DirFlag dir);
+    uint8_t getWalls();
+    uint8_t getSignature();
     bool isObstacle();
 };

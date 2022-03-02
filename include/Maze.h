@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include <stack>
 
+#define DEBUG false
+
 class Maze
 {
 private:
@@ -15,17 +17,19 @@ public:
     Maze();
     Maze(Coord size);
     void reset();
-    void removeNeighbourSignatures(Coord coord);
     void setObstacle(Coord coord);
     void generateMaze();
+    void printMaze();
+#if DEBUG
     Cell* operator[](int index);
-    bool isCellInBounds(Coord pos);
     void printWalls();
     void printSignatures();
-    void printMaze();
     void printObstacles();
     void printMazeGrid();
+#endif
 private:
+    bool isCellInBounds(Coord pos);
     void generate(Coord start);
-    void generateViewableMaze();
+    void generateMazeGrid();
+    void removeNeighbourSignatures(Coord coord);
 };

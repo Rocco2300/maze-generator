@@ -11,7 +11,7 @@ using namespace std::chrono;
 int main()
 {
     srand(time(NULL));
-    const Vec2 size(9, 9);
+    const Vec2 size(11, 9);
     Maze maze({size.x, size.y});
 
     maze.setObstacle({0, 0});

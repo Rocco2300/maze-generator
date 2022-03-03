@@ -18,7 +18,7 @@ Maze::Maze(Coord size)
     {
         for(int x = 0; x < size.x; x++)
         {
-            Coord currentCoord(y, x);
+            Coord currentCoord(x, y);
             grid(currentCoord) = Cell(currentCoord);
 
             for(int dir = 0; dir < 4; dir++)
@@ -36,7 +36,7 @@ Maze::Maze(Coord size)
     {
         for(int x = 0; x < size.x * 2 + 1; x++)
         {
-            maze(y, x) = 0;
+            maze(x, y) = 0;
         }
     }
 }
@@ -47,15 +47,15 @@ void Maze::reset()
     {
         for(int x = 0; x < size.x; x++)
         {
-            Coord currentCoord(y, x);
+            Coord currentCoord(x, y);
 
             for(int dir = 0; dir < 4; dir++)
             {
                 Coord nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
-                    grid(y, x).addSignature(dirToFlag[dir]);
-                    grid(y, x).resetWalls();
+                    grid(x, y).addSignature(dirToFlag[dir]);
+                    grid(x, y).resetWalls();
                 }
             }
         }
@@ -78,7 +78,7 @@ void Maze::removeNeighbourSignatures(Coord coord)
 
 void Maze::setObstacle(Coord coord)
 {
-    if(coord.x >= size.y || coord.y >= size.x || coord.x < 0 || coord.y < 0)
+    if(coord.x >= size.x || coord.y >= size.y || coord.x < 0 || coord.y < 0)
     {
         std::cerr << "Cell that you are trying to make obstacle is out of bounds!\n";
         return;
@@ -94,36 +94,36 @@ void Maze::generateMazeGrid()
     {
         for(int x = 1; x < size.x * 2 + 1; x += 2)
         {
-            auto cell = grid((y-1)/2, (x-1)/2);
+            auto cell = grid((x-1)/2, (y-1)/2);
             if(cell.isObstacle())
                 continue;
             
             if(cell.hasWall(DirFlag::North))
             {
-                maze(y-1, x-1) |= static_cast<uint8_t>(DirFlag::West);
-                maze(y-1, x  ) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
-                maze(y-1, x+1) |= static_cast<uint8_t>(DirFlag::East);
+                maze(x-1, y-1) |= static_cast<uint8_t>(DirFlag::West);
+                maze(x  , y-1) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze(x+1, y-1) |= static_cast<uint8_t>(DirFlag::East);
             }
 
             if(cell.hasWall(DirFlag::East))
             {
-                maze(y-1, x+1) |= static_cast<uint8_t>(DirFlag::North);
-                maze(y  , x+1) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
-                maze(y+1, x+1) |= static_cast<uint8_t>(DirFlag::South);
+                maze(x+1, y-1) |= static_cast<uint8_t>(DirFlag::North);
+                maze(x+1, y  ) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze(x+1, y+1) |= static_cast<uint8_t>(DirFlag::South);
             }
 
             if(cell.hasWall(DirFlag::South))
             {
-                maze(y+1, x-1) |= static_cast<uint8_t>(DirFlag::West);
-                maze(y+1, x  ) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
-                maze(y+1, x+1) |= static_cast<uint8_t>(DirFlag::East);
+                maze(x-1, y+1) |= static_cast<uint8_t>(DirFlag::West);
+                maze(x  , y+1) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze(x+1, y+1) |= static_cast<uint8_t>(DirFlag::East);
             }
 
             if(cell.hasWall(DirFlag::West))
             {
-                maze(y-1, x-1) |= static_cast<uint8_t>(DirFlag::North);
-                maze(y  , x-1) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
-                maze(y+1, x-1) |= static_cast<uint8_t>(DirFlag::South);
+                maze(x-1, y-1) |= static_cast<uint8_t>(DirFlag::North);
+                maze(x-1, y  ) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze(x-1, y+1) |= static_cast<uint8_t>(DirFlag::South);
             }
         }
     }
@@ -134,8 +134,8 @@ void Maze::generateMaze()
     Coord start;
     do
     {
-        start.x = rand() % size.y;
-        start.y = rand() % size.x;
+        start.x = rand() % size.x;
+        start.y = rand() % size.y;
     } while(grid(start).isObstacle());
 
     generate(start);
@@ -179,7 +179,7 @@ void Maze::output(std::ostream& out, OutputType type)
         {
             for(int x = 0; x < size.x * 2 + 1; x++)
             {
-                switch(maze(y, x))
+                switch(maze(x, y))
                 {
                 case 0b0000: out << reinterpret_cast<const char*>(u8"  ");           break;
                 case 0b0001: out << reinterpret_cast<const char*>(u8"\u2577 ");      break;
@@ -209,7 +209,7 @@ void Maze::output(std::ostream& out, OutputType type)
         {
             for(int x = 0; x < size.x; x++)
             {
-                out << std::hex << (int)grid(y, x).isObstacle() << (int)grid(y, x).getWalls() << " ";
+                out << std::hex << (int)grid(x, y).isObstacle() << (int)grid(x, y).getWalls() << " ";
             }
             out << "\n";
         }
@@ -218,7 +218,7 @@ void Maze::output(std::ostream& out, OutputType type)
 
 bool Maze::isCellInBounds(Coord pos)
 {
-    return pos.x >= 0 && pos.x < size.y && pos.y >= 0 && pos.y < size.x;
+    return pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y;
 }
 
 #if DEBUG

@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include <stack>
 
-#define DEBUG false
+#define DEBUG true
 
 enum class OutputType
 {
@@ -26,8 +26,8 @@ public:
     void setObstacle(Vec2 coord);
     void generateMaze();
     void output(std::ostream& out, OutputType type);
+    void load(std::istream& in);
 #if DEBUG
-    Cell* operator[](int index);
     void printWalls();
     void printSignatures();
     void printObstacles();

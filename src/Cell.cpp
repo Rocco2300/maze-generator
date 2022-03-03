@@ -3,11 +3,8 @@
 #include <cassert>
 #include <iostream>
 
-Cell::Cell() { }
-
-Cell::Cell(Vec2 pos)
+Cell::Cell()
 {
-    this->pos = pos;
     this->walls = 15;
     this->signature = 0;
     this->obstacle = false;
@@ -40,14 +37,14 @@ void Cell::setSignature(uint8_t signature)
     this->signature = signature;
 }
 
+void Cell::setWalls(uint8_t walls)
+{
+    this->walls = walls;
+}
+
 void Cell::setObstacle(bool value)
 {
     obstacle = value;
-}
-
-Vec2 Cell::getPosition()
-{
-    return pos;
 }
 
 bool Cell::hasWall(DirFlag dir)

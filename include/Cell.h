@@ -43,21 +43,19 @@ enum class DirFlag
 class Cell
 {
 private:
-    Vec2 pos;
     uint8_t signature;
     uint8_t walls;
     bool obstacle;
 public:
     Cell();
-    Cell(Vec2 pos);
     void resetWalls();
     void destroyWall(DirFlag dir);
     void addSignature(DirFlag dir);
     void removeSignature(DirFlag dir);
     void setSignature(uint8_t signature);
+    void setWalls(uint8_t walls);
     void setObstacle(bool value);
     
-    Vec2 getPosition();
     bool hasWall(DirFlag dir);
     uint8_t getWalls();
     uint8_t getSignature();

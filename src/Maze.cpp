@@ -19,7 +19,7 @@ Maze::Maze(Vec2 size)
         for(int x = 0; x < size.w; x++)
         {
             Vec2 currentCoord(x, y);
-            grid(currentCoord) = Cell(currentCoord);
+            grid(currentCoord) = Cell();
 
             for(int dir = 0; dir < 4; dir++)
             {
@@ -29,14 +29,6 @@ Maze::Maze(Vec2 size)
                     grid(currentCoord).addSignature(dirToFlag[dir]);
                 }
             }
-        }
-    }
-
-    for(int y = 0; y < size.h * 2 + 1; y++)
-    {
-        for(int x = 0; x < size.w * 2 + 1; x++)
-        {
-            maze(x, y) = 0;
         }
     }
 }
@@ -90,6 +82,14 @@ void Maze::setObstacle(Vec2 coord)
 
 void Maze::generateMazeGrid()
 {
+    for(int y = 0; y < size.h * 2 + 1; y++)
+    {
+        for(int x = 0; x < size.w * 2 + 1; x++)
+        {
+            maze(x, y) = 0;
+        }
+    }
+
     for(int y = 1; y < size.h * 2 + 1; y += 2)
     {
         for(int x = 1; x < size.w * 2 + 1; x += 2)
@@ -216,17 +216,41 @@ void Maze::output(std::ostream& out, OutputType type)
     }
 }
 
+/*
+This function loads a maze from the data in the stream.
+Warning: make sure the stream contains data not
+visual maze output
+*/
+void Maze::load(std::istream& in)
+{
+    in >> std::hex >> size.w >> size.h;
+   
+    grid = Grid<Cell>(size);
+    maze = Grid<uint8_t>({size.x * 2 + 1, size.y * 2 + 1});
+
+    for(int y = 0; y < size.h; y++)
+    {
+        for(int x = 0; x < size.w; x++)
+        {
+            int data;
+            in >> std::hex >> data;
+            Cell cell;
+            cell.setObstacle(data & 0b10000);
+            cell.setWalls(data & 0b1111);
+            cell.setSignature(0);
+            grid(x, y) = cell;
+        }
+    }   
+    
+    generateMazeGrid();
+}
+
 bool Maze::isCellInBounds(Vec2 pos)
 {
     return pos.x >= 0 && pos.x < size.w && pos.y >= 0 && pos.y < size.h;
 }
 
 #if DEBUG
-Cell* Maze::operator[](int index)
-{
-    return grid[index];
-}
-
 void Maze::printWalls()
 {
     for(int y = 0; y < size.h; y++)

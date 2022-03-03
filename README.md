@@ -26,6 +26,6 @@ To output the maze, you will have to use `output` and provide a ouput stream and
 - Maze - in which you output the visual maze generated
 - Data - in which you output the data
 
-You can also load the data from a file, you will have to have outputed in the file the maze data, and then you can read from the file.
+You can also load the data from a file using the `load` function, you will have to provide a input stream that contains maze-data.
 
 The mazes are stored in hex, the first 2 elements on the first line are the width and height, and then the data begins, being stored in w columns and h rows, the first 4 bits are used to define the walls of the cell, and the 5th bit is used to define if the cell is an obstacle or not.

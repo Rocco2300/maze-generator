@@ -68,6 +68,13 @@ void Maze::removeNeighbourSignatures(Vec2 coord)
     }
 }
 
+void Maze::setSize(Vec2 size)
+{
+    this->size = size; 
+    grid = Grid<Cell>(size);
+    maze = Grid<uint8_t>({size.w * 2 + 1, size.h * 2 + 1});
+}
+
 void Maze::setObstacle(Vec2 coord)
 {
     if(coord.x >= size.w || coord.y >= size.h || coord.x < 0 || coord.y < 0)
@@ -171,6 +178,9 @@ void Maze::generate(Vec2 start)
     }
 }
 
+/*
+Output to the stream provided either the maze, or the maze data
+*/
 void Maze::output(std::ostream& out, OutputType type)
 {
     if(type == OutputType::Maze)
@@ -241,7 +251,7 @@ void Maze::load(std::istream& in)
             grid(x, y) = cell;
         }
     }   
-    
+
     generateMazeGrid();
 }
 

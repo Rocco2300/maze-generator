@@ -12,8 +12,8 @@ public:
     Grid();
     Grid(Coord size);
     Grid(const Grid& grid);
-    T* operator[](int index);
-    T& at(int xIndex, int yIndex);
+    T& operator()(int x, int y);
+    T& operator()(const Coord& p);
     Grid& operator=(const Grid& grid);
     Coord getSize();
     ~Grid();

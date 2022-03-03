@@ -19,14 +19,14 @@ Maze::Maze(Coord size)
         for(int x = 0; x < size.x; x++)
         {
             Coord currentCoord(y, x);
-            grid[y][x] = Cell(currentCoord);
+            grid(currentCoord) = Cell(currentCoord);
 
             for(int dir = 0; dir < 4; dir++)
             {
                 Coord nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
-                    grid[y][x].addSignature(dirToFlag[dir]);
+                    grid(currentCoord).addSignature(dirToFlag[dir]);
                 }
             }
         }
@@ -36,7 +36,7 @@ Maze::Maze(Coord size)
     {
         for(int x = 0; x < size.x * 2 + 1; x++)
         {
-            maze[y][x] = 0;
+            maze(y, x) = 0;
         }
     }
 }
@@ -54,8 +54,8 @@ void Maze::reset()
                 Coord nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
-                    grid[y][x].addSignature(dirToFlag[dir]);
-                    grid[y][x].resetWalls();
+                    grid(y, x).addSignature(dirToFlag[dir]);
+                    grid(y, x).resetWalls();
                 }
             }
         }
@@ -71,15 +71,15 @@ void Maze::removeNeighbourSignatures(Coord coord)
         if(isCellInBounds(nextCoord))
         {
             Direction opposite = oppositeDir[dir];
-            grid[nextCoord.x][nextCoord.y].removeSignature(dirToFlag[(int)opposite]);
+            grid(nextCoord).removeSignature(dirToFlag[(int)opposite]);
         }
     }
 }
 
 void Maze::setObstacle(Coord coord)
 {
-    grid[coord.x][coord.y].setObstacle(true);
-    grid[coord.x][coord.y].setSignature(0);
+    grid(coord).setObstacle(true);
+    grid(coord).setSignature(0);
     removeNeighbourSignatures(coord);
 }
 
@@ -89,36 +89,36 @@ void Maze::generateMazeGrid()
     {
         for(int x = 1; x < size.x * 2 + 1; x += 2)
         {
-            auto cell = grid[(y-1)/2][(x-1)/2];
+            auto cell = grid((y-1)/2, (x-1)/2);
             if(cell.isObstacle())
                 continue;
             
             if(cell.hasWall(DirFlag::North))
             {
-                maze[y-1][x-1] |= static_cast<uint8_t>(DirFlag::West);
-                maze[y-1][x  ] |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
-                maze[y-1][x+1] |= static_cast<uint8_t>(DirFlag::East);
+                maze(y-1, x-1) |= static_cast<uint8_t>(DirFlag::West);
+                maze(y-1, x  ) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze(y-1, x+1) |= static_cast<uint8_t>(DirFlag::East);
             }
 
             if(cell.hasWall(DirFlag::East))
             {
-                maze[y-1][x+1] |= static_cast<uint8_t>(DirFlag::North);
-                maze[y  ][x+1] |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
-                maze[y+1][x+1] |= static_cast<uint8_t>(DirFlag::South);
+                maze(y-1, x+1) |= static_cast<uint8_t>(DirFlag::North);
+                maze(y  , x+1) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze(y+1, x+1) |= static_cast<uint8_t>(DirFlag::South);
             }
 
             if(cell.hasWall(DirFlag::South))
             {
-                maze[y+1][x-1] |= static_cast<uint8_t>(DirFlag::West);
-                maze[y+1][x  ] |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
-                maze[y+1][x+1] |= static_cast<uint8_t>(DirFlag::East);
+                maze(y+1, x-1) |= static_cast<uint8_t>(DirFlag::West);
+                maze(y+1, x  ) |= static_cast<uint8_t>(DirFlag::East) | static_cast<uint8_t>(DirFlag::West);
+                maze(y+1, x+1) |= static_cast<uint8_t>(DirFlag::East);
             }
 
             if(cell.hasWall(DirFlag::West))
             {
-                maze[y-1][x-1] |= static_cast<uint8_t>(DirFlag::North);
-                maze[y  ][x-1] |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
-                maze[y+1][x-1] |= static_cast<uint8_t>(DirFlag::South);
+                maze(y-1, x-1) |= static_cast<uint8_t>(DirFlag::North);
+                maze(y  , x-1) |= static_cast<uint8_t>(DirFlag::North) | static_cast<uint8_t>(DirFlag::South);
+                maze(y+1, x-1) |= static_cast<uint8_t>(DirFlag::South);
             }
         }
     }
@@ -131,7 +131,7 @@ void Maze::generateMaze()
     {
         start.x = rand() % size.y;
         start.y = rand() % size.x;
-    } while(grid[start.x][start.y].isObstacle());
+    } while(grid(start).isObstacle());
 
     generate(start);
     generateMazeGrid();
@@ -146,17 +146,17 @@ void Maze::generate(Coord start)
         auto coord = stack.top();
         removeNeighbourSignatures(coord);
         
-        if(grid[coord.x][coord.y].getSignature() != 0)
+        if(grid(coord).getSignature() != 0)
         {
-            auto sign = grid[coord.x][coord.y].getSignature();
+            auto sign = grid(coord).getSignature();
             auto randIndex = rand() % randDirTableSizes[sign];
             auto nextDir = randDirTable[sign][randIndex];
             auto offset = coord + dirOffset[(int)nextDir];
 
-            grid[coord.x][coord.y].destroyWall(dirToFlag[(int)nextDir]);
-            grid[offset.x][offset.y].destroyWall(dirToFlag[(int)oppositeDir[(int)nextDir]]);
+            grid(coord).destroyWall(dirToFlag[(int)nextDir]);
+            grid(offset).destroyWall(dirToFlag[(int)oppositeDir[(int)nextDir]]);
 
-            grid[coord.x][coord.y].removeSignature(dirToFlag[(int)nextDir]);
+            grid(coord).removeSignature(dirToFlag[(int)nextDir]);
             stack.push(offset);
         }
         else
@@ -174,7 +174,7 @@ void Maze::output(std::ostream& out, OutputType type)
         {
             for(int x = 0; x < size.x * 2 + 1; x++)
             {
-                switch(maze[y][x])
+                switch(maze(y, x))
                 {
                 case 0b0000: out << reinterpret_cast<const char*>(u8"  ");           break;
                 case 0b0001: out << reinterpret_cast<const char*>(u8"\u2577 ");      break;
@@ -204,7 +204,7 @@ void Maze::output(std::ostream& out, OutputType type)
         {
             for(int x = 0; x < size.x; x++)
             {
-                out << std::hex << (int)grid[y][x].isObstacle() << (int)grid[y][x].getWalls() << " ";
+                out << std::hex << (int)grid(y, x).isObstacle() << (int)grid(y, x).getWalls() << " ";
             }
             out << "\n";
         }

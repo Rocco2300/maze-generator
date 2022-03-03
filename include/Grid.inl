@@ -36,17 +36,17 @@ Grid<T>::Grid(const Grid& grid)
 }
 
 template <typename T>
-T* Grid<T>::operator[](int index)
+T& Grid<T>::operator()(int x, int y)
 {
-    assert(index < size.x || index < size.y);
-    return data[index];
+    assert(x < size.y && y < size.x && x >= 0 && y >= 0);
+    return data[x][y];
 }
 
 template <typename T>
-T& Grid<T>::at(int xIndex, int yIndex)
+T& Grid<T>::operator()(const Coord& p)
 {
-    assert(xIndex < size.x && yIndex < size.y);
-    return data[xIndex][yIndex];
+    assert(p.x < size.y && p.y < size.x && p.x >= 0 && p.y >= 0);
+    return data[p.x][p.y];
 }
 
 template <typename T>

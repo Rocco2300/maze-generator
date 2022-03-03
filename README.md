@@ -4,7 +4,7 @@
 
 This is a backtracking maze generator I remade, the original project was quite convoluted and badly written, so I took the time to make it a better project for me to learn.
 
-It is made in c++, it uses iterative backtracking using a stack and it uses a heap allocatted grid structure, so that means that all the mazes can be as large as you want.
+It is made in c++, it uses iterative backtracking using a stack and it uses a heap allocated grid structure, so that means that all the mazes can be as large as you want.
 
 This program can produce any shape of maze, any combination of w*h and also you can add obstacles to change the shape of the maze however you want.
 
@@ -12,9 +12,14 @@ This program can produce any shape of maze, any combination of w*h and also you 
 
 ![Maze Example](ss.png)
 
+## Dependecies
+
+- g++
+- make
+
 ## How to install
 
-Since this project doesn't have any dependencies, you can just build it using the included makefile, using mingw32-make or make on linux, make sure before building to add the `obj` directory in the `main` directory.
+Since this project doesn't have any major dependencies, you can just build it using the included makefile, using mingw32-make or make on linux, make sure before building to add the `obj` directory in the `main` directory.
 
 ## How to use
 

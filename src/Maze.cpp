@@ -78,6 +78,11 @@ void Maze::removeNeighbourSignatures(Coord coord)
 
 void Maze::setObstacle(Coord coord)
 {
+    if(coord.x >= size.y || coord.y >= size.x || coord.x < 0 || coord.y < 0)
+    {
+        std::cerr << "Cell that you are trying to make obstacle is out of bounds!\n";
+        return;
+    }
     grid(coord).setObstacle(true);
     grid(coord).setSignature(0);
     removeNeighbourSignatures(coord);

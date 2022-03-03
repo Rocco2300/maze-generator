@@ -56,8 +56,8 @@ int main()
     // auto end = steady_clock::now();
     // auto duration = duration_cast<microseconds>(end - start);
     // std::cout << "The generation took: " << duration.count() << " μs" << std::endl;
-    // std::ofstream out("maze.txt");
+    std::ofstream out("maze.txt");
     maze.output(std::cout, OutputType::Maze);
-    // out.close();
+    out.close();
     return 0;
 }

@@ -7,14 +7,14 @@ class Grid
 {
 private:
     T* data;
-    Coord size;
+    Vec2 size;
 public:
     Grid();
-    Grid(Coord size);
+    Grid(Vec2 size);
     T& operator()(int x, int y);
-    T& operator()(const Coord& c);
+    T& operator()(const Vec2& c);
     Grid& operator=(const Grid& grid);
-    Coord getSize();
+    Vec2 getSize();
     ~Grid();
 };
 

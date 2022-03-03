@@ -6,7 +6,7 @@ Grid<T>::Grid()
 }
 
 template <typename T>
-Grid<T>::Grid(Coord size)
+Grid<T>::Grid(Vec2 size)
 {
     this->size = size;
     data = new T[size.x * size.y];
@@ -20,7 +20,7 @@ T& Grid<T>::operator()(int x, int y)
 }
 
 template <typename T>
-T& Grid<T>::operator()(const Coord& c)
+T& Grid<T>::operator()(const Vec2& c)
 {
     assert(c.x < size.x && c.y < size.y && c.x >= 0 && c.y >= 0);
     return data[c.y * size.x + c.x];
@@ -45,7 +45,7 @@ Grid<T>& Grid<T>::operator=(const Grid<T>& grid)
 }
 
 template <typename T>
-Coord Grid<T>::getSize()
+Vec2 Grid<T>::getSize()
 {
     return size;
 }

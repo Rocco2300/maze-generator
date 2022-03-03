@@ -15,15 +15,15 @@ enum class OutputType
 class Maze
 {
 private:
-    std::stack<Coord> stack;
+    std::stack<Vec2> stack;
     Grid<Cell> grid;
     Grid<uint8_t> maze;
-    Coord size;
+    Vec2 size;
 public:
     Maze();
-    Maze(Coord size);
+    Maze(Vec2 size);
     void reset();
-    void setObstacle(Coord coord);
+    void setObstacle(Vec2 coord);
     void generateMaze();
     void output(std::ostream& out, OutputType type);
 #if DEBUG
@@ -34,8 +34,8 @@ public:
     void printMazeGrid();
 #endif
 private:
-    bool isCellInBounds(Coord pos);
-    void generate(Coord start);
+    bool isCellInBounds(Vec2 pos);
+    void generate(Vec2 start);
     void generateMazeGrid();
-    void removeNeighbourSignatures(Coord coord);
+    void removeNeighbourSignatures(Vec2 coord);
 };

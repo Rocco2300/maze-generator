@@ -4,20 +4,24 @@
 #include <cassert>
 #include <cstdint>
 
-struct Coord
+struct Vec2
 {
-    int x, y;
-
-    Coord() { }
-    Coord(int _x, int _y) : x{_x}, y{_y} { }
-
-    Coord operator+(const Coord& other)
+    union 
     {
-        Coord res(x + other.x, y + other.y);
+        struct { int x, y; };
+        struct { int w, h; };
+    };
+
+    Vec2() { }
+    Vec2(int _x, int _y) : x{_x}, y{_y} { }
+
+    Vec2 operator+(const Vec2& other)
+    {
+        Vec2 res(x + other.x, y + other.y);
         return res;
     }
 
-    friend std::ostream& operator<<(std::ostream& out, const Coord& coord);
+    friend std::ostream& operator<<(std::ostream& out, const Vec2& coord);
 };
 
 enum class Direction
@@ -39,13 +43,13 @@ enum class DirFlag
 class Cell
 {
 private:
-    Coord pos;
+    Vec2 pos;
     uint8_t signature;
     uint8_t walls;
     bool obstacle;
 public:
     Cell();
-    Cell(Coord pos);
+    Cell(Vec2 pos);
     void resetWalls();
     void destroyWall(DirFlag dir);
     void addSignature(DirFlag dir);
@@ -53,7 +57,7 @@ public:
     void setSignature(uint8_t signature);
     void setObstacle(bool value);
     
-    Coord getPosition();
+    Vec2 getPosition();
     bool hasWall(DirFlag dir);
     uint8_t getWalls();
     uint8_t getSignature();

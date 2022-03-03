@@ -24,7 +24,7 @@ int main()
     //     std::cout << std::endl;
     // }
 
-    const Coord size(11, 9);
+    const Vec2 size(11, 9);
     Maze maze({size.x, size.y});
 
     maze.setObstacle({0, 0});
@@ -49,13 +49,13 @@ int main()
         cnt++;
     }
 
-    // auto start = steady_clock::now();
+    auto start = steady_clock::now();
     maze.generateMaze();
-    // auto end = steady_clock::now();
-    // auto duration = duration_cast<microseconds>(end - start);
-    // std::cout << "The generation took: " << duration.count() << " μs" << std::endl;
+    auto end = steady_clock::now();
+    auto duration = duration_cast<microseconds>(end - start);
+    std::cout << "The generation took: " << duration.count() << " μs" << std::endl;
     std::ofstream out("maze.txt");
-    maze.output(out, OutputType::Data);
+    maze.output(std::cout, OutputType::Maze);
     out.close();
     return 0;
 }

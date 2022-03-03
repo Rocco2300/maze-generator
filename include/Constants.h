@@ -4,8 +4,8 @@
 #include <vector>
 #include <array>
 
-const Coord dirOffset[4] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-const Coord cornerDirOffset[4] = {{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
+const Vec2 dirOffset[4] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+const Vec2 cornerDirOffset[4] = {{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
 
 constexpr DirFlag dirToFlag[4] = {
     DirFlag::North,

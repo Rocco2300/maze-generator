@@ -5,7 +5,7 @@
 
 Cell::Cell() { }
 
-Cell::Cell(Coord pos)
+Cell::Cell(Vec2 pos)
 {
     this->pos = pos;
     this->walls = 15;
@@ -45,7 +45,7 @@ void Cell::setObstacle(bool value)
     obstacle = value;
 }
 
-Coord Cell::getPosition()
+Vec2 Cell::getPosition()
 {
     return pos;
 }

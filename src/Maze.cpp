@@ -8,22 +8,22 @@ Maze::Maze()
 {
 }
 
-Maze::Maze(Coord size)
+Maze::Maze(Vec2 size)
 {
     this->size = size;
     grid = Grid<Cell>(size);
-    maze = Grid<uint8_t>({size.x * 2 + 1, size.y * 2 + 1});
+    maze = Grid<uint8_t>({size.w * 2 + 1, size.h * 2 + 1});
 
-    for(int y = 0; y < size.y; y++)
+    for(int y = 0; y < size.h; y++)
     {
-        for(int x = 0; x < size.x; x++)
+        for(int x = 0; x < size.w; x++)
         {
-            Coord currentCoord(x, y);
+            Vec2 currentCoord(x, y);
             grid(currentCoord) = Cell(currentCoord);
 
             for(int dir = 0; dir < 4; dir++)
             {
-                Coord nextCoord = currentCoord + dirOffset[dir];
+                Vec2 nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
                     grid(currentCoord).addSignature(dirToFlag[dir]);
@@ -32,9 +32,9 @@ Maze::Maze(Coord size)
         }
     }
 
-    for(int y = 0; y < size.y * 2 + 1; y++)
+    for(int y = 0; y < size.h * 2 + 1; y++)
     {
-        for(int x = 0; x < size.x * 2 + 1; x++)
+        for(int x = 0; x < size.w * 2 + 1; x++)
         {
             maze(x, y) = 0;
         }
@@ -43,15 +43,15 @@ Maze::Maze(Coord size)
 
 void Maze::reset()
 {
-    for(int y = 0; y < size.y; y++)
+    for(int y = 0; y < size.h; y++)
     {
-        for(int x = 0; x < size.x; x++)
+        for(int x = 0; x < size.w; x++)
         {
-            Coord currentCoord(x, y);
+            Vec2 currentCoord(x, y);
 
             for(int dir = 0; dir < 4; dir++)
             {
-                Coord nextCoord = currentCoord + dirOffset[dir];
+                Vec2 nextCoord = currentCoord + dirOffset[dir];
                 if(isCellInBounds(nextCoord))
                 {
                     grid(x, y).addSignature(dirToFlag[dir]);
@@ -62,11 +62,11 @@ void Maze::reset()
     }
 }
 
-void Maze::removeNeighbourSignatures(Coord coord)
+void Maze::removeNeighbourSignatures(Vec2 coord)
 {
     for(int dir = 0; dir < 4; dir++)
     {
-        Coord nextCoord = coord + dirOffset[dir];
+        Vec2 nextCoord = coord + dirOffset[dir];
 
         if(isCellInBounds(nextCoord))
         {
@@ -76,9 +76,9 @@ void Maze::removeNeighbourSignatures(Coord coord)
     }
 }
 
-void Maze::setObstacle(Coord coord)
+void Maze::setObstacle(Vec2 coord)
 {
-    if(coord.x >= size.x || coord.y >= size.y || coord.x < 0 || coord.y < 0)
+    if(coord.x >= size.w || coord.y >= size.h || coord.x < 0 || coord.y < 0)
     {
         std::cerr << "Cell that you are trying to make obstacle is out of bounds!\n";
         return;
@@ -90,9 +90,9 @@ void Maze::setObstacle(Coord coord)
 
 void Maze::generateMazeGrid()
 {
-    for(int y = 1; y < size.y * 2 + 1; y += 2)
+    for(int y = 1; y < size.h * 2 + 1; y += 2)
     {
-        for(int x = 1; x < size.x * 2 + 1; x += 2)
+        for(int x = 1; x < size.w * 2 + 1; x += 2)
         {
             auto cell = grid((x-1)/2, (y-1)/2);
             if(cell.isObstacle())
@@ -131,18 +131,18 @@ void Maze::generateMazeGrid()
 
 void Maze::generateMaze()
 {
-    Coord start;
+    Vec2 start;
     do
     {
-        start.x = rand() % size.x;
-        start.y = rand() % size.y;
+        start.x = rand() % size.w;
+        start.y = rand() % size.h;
     } while(grid(start).isObstacle());
 
     generate(start);
     generateMazeGrid();
 }
 
-void Maze::generate(Coord start)
+void Maze::generate(Vec2 start)
 {
     stack.push(start);
 
@@ -175,9 +175,9 @@ void Maze::output(std::ostream& out, OutputType type)
 {
     if(type == OutputType::Maze)
     {
-        for(int y = 0; y < size.y * 2 + 1; y++)
+        for(int y = 0; y < size.h * 2 + 1; y++)
         {
-            for(int x = 0; x < size.x * 2 + 1; x++)
+            for(int x = 0; x < size.w * 2 + 1; x++)
             {
                 switch(maze(x, y))
                 {
@@ -205,9 +205,9 @@ void Maze::output(std::ostream& out, OutputType type)
     else if(type == OutputType::Data)
     {
         out << std::hex << size.x << " " << size.y << "\n";
-        for(int y = 0; y < size.y; y++)
+        for(int y = 0; y < size.h; y++)
         {
-            for(int x = 0; x < size.x; x++)
+            for(int x = 0; x < size.w; x++)
             {
                 out << std::hex << (int)grid(x, y).isObstacle() << (int)grid(x, y).getWalls() << " ";
             }
@@ -216,9 +216,9 @@ void Maze::output(std::ostream& out, OutputType type)
     }
 }
 
-bool Maze::isCellInBounds(Coord pos)
+bool Maze::isCellInBounds(Vec2 pos)
 {
-    return pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y;
+    return pos.x >= 0 && pos.x < size.w && pos.y >= 0 && pos.y < size.h;
 }
 
 #if DEBUG
@@ -229,11 +229,11 @@ Cell* Maze::operator[](int index)
 
 void Maze::printWalls()
 {
-    for(int y = 0; y < size.y; y++)
+    for(int y = 0; y < size.h; y++)
     {
-        for(int x = 0; x < size.x; x++)
+        for(int x = 0; x < size.w; x++)
         {
-            std::cout << std::setw(2) << (int)grid[y][x].getWalls() << " ";
+            std::cout << std::setw(2) << (int)grid(x, y).getWalls() << " ";
         }
         std::cout << std::endl;
     }
@@ -241,11 +241,11 @@ void Maze::printWalls()
 
 void Maze::printSignatures()
 {
-    for(int y = 0; y < size.y; y++)
+    for(int y = 0; y < size.h; y++)
     {
-        for(int x = 0; x < size.x; x++)
+        for(int x = 0; x < size.w; x++)
         {
-            std::cout << std::setw(2) << (int)grid[y][x].getSignature() << " ";
+            std::cout << std::setw(2) << (int)grid(x, y).getSignature() << " ";
         }
         std::cout << std::endl;
     }
@@ -253,11 +253,11 @@ void Maze::printSignatures()
 
 void Maze::printObstacles()
 {
-    for(int y = 0; y < size.y; y++)
+    for(int y = 0; y < size.h; y++)
     {
-        for(int x = 0; x < size.x; x++)
+        for(int x = 0; x < size.w; x++)
         {
-            std::cout << grid[y][x].isObstacle() << " ";
+            std::cout << grid(x, y).isObstacle() << " ";
         }
         std::cout << std::endl;
     }
@@ -265,11 +265,11 @@ void Maze::printObstacles()
 
 void Maze::printMazeGrid()
 {
-    for(int y = 0; y < size.y * 2 + 1; y++)
+    for(int y = 0; y < size.h * 2 + 1; y++)
     {
-        for(int x = 0; x < size.x * 2 + 1; x++)
+        for(int x = 0; x < size.w * 2 + 1; x++)
         {
-            std::cout << std::setw(2) << (int)maze[y][x] << " ";
+            std::cout << std::setw(2) << (int)maze(x, y) << " ";
         }
         std::cout << std::endl;
     }

@@ -13,7 +13,11 @@ Maze::Maze(Vec2 size)
     this->size = size;
     grid = Grid<Cell>(size);
     maze = Grid<uint8_t>({size.w * 2 + 1, size.h * 2 + 1});
+    init();
+}
 
+void Maze::init()
+{
     for(int y = 0; y < size.h; y++)
     {
         for(int x = 0; x < size.w; x++)
@@ -31,6 +35,14 @@ Maze::Maze(Vec2 size)
             }
         }
     }
+}
+
+void Maze::init(Vec2 size)
+{
+    this->size = size;
+    grid = Grid<Cell>(size);
+    maze = Grid<uint8_t>({size.w * 2 + 1, size.h * 2 + 1});
+    init();
 }
 
 void Maze::reset()
@@ -75,6 +87,10 @@ void Maze::setSize(Vec2 size)
     maze = Grid<uint8_t>({size.w * 2 + 1, size.h * 2 + 1});
 }
 
+/*
+Set an obstacles at x and y location, if the 
+location is out of bounds it will skip if
+*/
 void Maze::setObstacle(Vec2 coord)
 {
     if(coord.x >= size.w || coord.y >= size.h || coord.x < 0 || coord.y < 0)

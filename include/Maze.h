@@ -22,6 +22,8 @@ private:
 public:
     Maze();
     Maze(Vec2 size);
+    void init();
+    void init(Vec2 size);
     void reset();
     void setSize(Vec2 size);
     void setObstacle(Vec2 coord);
